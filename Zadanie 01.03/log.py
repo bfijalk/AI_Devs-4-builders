@@ -8,6 +8,7 @@ _RED = "\x1b[31m"
 _YELLOW = "\x1b[33m"
 _CYAN = "\x1b[36m"
 _MAGENTA = "\x1b[35m"
+_BLUE = "\x1b[34m"
 
 
 def _print(label: str, color: str, *parts: str, file=sys.stdout) -> None:
@@ -57,6 +58,18 @@ def ai_response(reply: str) -> None:
 
 def response(session_id: str, reply: str) -> None:
     _print("RESPONSE", _GREEN, f"session={_BOLD}{session_id}{_R}  msg={_DIM}{reply!r}{_R}")
+
+
+def mcp_request(name: str, args: dict) -> None:
+    _print("MCP", _BLUE, f"→ {_BOLD}{name}{_R}({_DIM}{args}{_R})")
+
+
+def mcp_response(name: str, result) -> None:
+    _print("MCP", _BLUE, f"← {_BOLD}{name}{_R} = {_DIM}{result!r}{_R}")
+
+
+def mcp_error(name: str, exc: Exception) -> None:
+    _print("MCP", _RED, f"✗ {_BOLD}{name}{_R} failed: {exc}")
 
 
 def error(context: str, exc: Exception) -> None:
