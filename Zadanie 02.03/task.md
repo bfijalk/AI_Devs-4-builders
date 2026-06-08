@@ -10,12 +10,13 @@ Plik zmienia się o północy (nowe sygnatury czasu), więc pobieraj go ponownie
 
 3. Napisz tool w języku pthon, który przefiltruje ten plik, a następnie stworzy nowy plik filtered_log który będzie zawieral tylko statusy [ERRO] i [CRIT] to powinna byc czysto programistyczna funkcja, bez dostepu do LLMa.
 
+4. Przefiltruj logi i zostaw tylko te, ktore odnosza sie do podzespolow elektrowni.
 
-4. Napisz funkcje, ktora tym razem skorzysta z LLMa. Na podstawie pliku filtered_log.log przejrzyj wszystkie logi, które tutaj byly i dokonaj agregacji co pol godziny. Zbierz wszystkie logi, ktore nagromadzily sie przez 60 minut i zamien je na jeden log podsumowujacy zdarzenia z tych 60 minut. Badz scisly. Jezeli bylo kilka rodzajow logow, to spisz podsumowanie dla kazdego typu. Czyli co bylo jako CRIT, co jako Error i co jako warn. W takim przypadku kompresja powinna miec 3 linijki po kazdych 60 minutach. Nowy plik zapisz w folderze files. Zadbaj o to, aby w pliku wynikowym nie bylo pustych linii.
+5. Napisz funkcje, ktora tym razem skorzysta z LLMa. Na podstawie pliku filtered_log.log przejrzyj wszystkie logi, które tutaj byly i dokonaj agregacji co pol godziny. Zbierz wszystkie logi, ktore nagromadzily sie przez 30 minut i zamien je na jeden log podsumowujacy zdarzenia z tych 30 minut. Badz scisly. Jezeli bylo kilka rodzajow logow, to spisz podsumowanie dla kazdego typu. Czyli co bylo jako CRIT, co jako Error i co jako warn. W takim przypadku kompresja powinna miec 3 linijki po kazdych 60 minutach. Nowy plik zapisz w folderze files. Zadbaj o to, aby w pliku wynikowym nie bylo pustych linii.
 
-5. Napisz jeszcze jedna funkcje, ktora teraz nie ma dostepu do LLM i deterministycznie policzy, ile ten tekst bedzie mial tokenow.
+6. Napisz jeszcze jedna funkcje, ktora teraz nie ma dostepu do LLM i deterministycznie policzy, ile ten tekst bedzie mial tokenow.
 
-6. Wyslij odpowiedz
+7. Wyslij odpowiedz
 
 Metodą POST na https://hub.ag3nts.org/verify:
 
