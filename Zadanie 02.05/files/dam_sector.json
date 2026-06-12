@@ -1,0 +1,10 @@
+{
+  "column": 2,
+  "row": 4,
+  "grid": {
+    "columns": 3,
+    "rows": 4
+  },
+  "vision_model": "openai/gpt-5.4",
+  "vision_response": "{\"column\": 2, \"row\": 4, \"reasoning\": \"Najbardziej wyraźny turkusowy akwen bezpośrednio styka się z betonową zaporą przy dolnej krawędzi obrazu, a punkt styku wypada w środkowym dolnym sektorze siatki.\"}"
+}

@@ -1,0 +1,18 @@
+{
+  "success": true,
+  "flag": "{FLG:LETSFLY}",
+  "hub_response": {
+    "code": 0,
+    "message": "{FLG:LETSFLY}"
+  },
+  "instructions": [
+    "setDestinationObject(PWR6132PL)",
+    "set(2,4)",
+    "set(engineON)",
+    "set(100%)",
+    "set(10m)",
+    "set(destroy)",
+    "set(return)",
+    "flyToLocation"
+  ]
+}
