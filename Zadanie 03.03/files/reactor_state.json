@@ -1,0 +1,96 @@
+{
+  "code": 100,
+  "message": "Reactor state loaded.",
+  "board": [
+    [
+      ".",
+      ".",
+      ".",
+      ".",
+      "B",
+      "B",
+      "."
+    ],
+    [
+      ".",
+      "B",
+      ".",
+      ".",
+      "B",
+      "B",
+      "."
+    ],
+    [
+      ".",
+      "B",
+      "B",
+      "B",
+      ".",
+      ".",
+      "."
+    ],
+    [
+      ".",
+      ".",
+      "B",
+      "B",
+      ".",
+      ".",
+      "."
+    ],
+    [
+      ".",
+      ".",
+      ".",
+      ".",
+      ".",
+      ".",
+      "P"
+    ]
+  ],
+  "player": {
+    "col": 7,
+    "row": 5
+  },
+  "goal": {
+    "col": 7,
+    "row": 5
+  },
+  "blocks": [
+    {
+      "col": 2,
+      "top_row": 2,
+      "bottom_row": 3,
+      "direction": "down"
+    },
+    {
+      "col": 3,
+      "top_row": 3,
+      "bottom_row": 4,
+      "direction": "up"
+    },
+    {
+      "col": 4,
+      "top_row": 3,
+      "bottom_row": 4,
+      "direction": "up"
+    },
+    {
+      "col": 5,
+      "top_row": 1,
+      "bottom_row": 2,
+      "direction": "down"
+    },
+    {
+      "col": 6,
+      "top_row": 1,
+      "bottom_row": 2,
+      "direction": "down"
+    }
+  ],
+  "reached_goal": true,
+  "is_crushed": false,
+  "crush_message": null,
+  "flag": "{FLG:INSTALLED}",
+  "updated_at": "2026-06-15T09:21:12\u002B02:00"
+}

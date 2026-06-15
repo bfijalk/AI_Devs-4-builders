@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Reactor Preview</title>
+<link href="/i/icon.png?v=3" rel="shortcut icon" type="image/x-icon" />
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg-primary: #0a0a0a;
+  --bg-surface: #161616;
+  --border: #3a3a3a;
+  --border-strong: #4a4a4a;
+  --text-primary: #ffffff;
+  --text-muted: #888888;
+  --accent: #75f86f;
+  --accent-dim: rgba(117, 248, 111, 0.12);
+  --error: #ff8080;
+  --warning: #f78c6c;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 48px 16px;
+  font-family: 'Lexend Deca', system-ui, sans-serif;
+  background: var(--bg-primary);
+  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--text-primary);
+  display: flex;
+  justify-content: center;
+}
+
+.page {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.node {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 24px;
+}
+
+.node--active {
+  border-color: var(--accent);
+  background: linear-gradient(135deg, var(--accent-dim), transparent);
+}
+
+.node__label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+
+.status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  padding: 4px 10px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-muted);
+}
+
+.pill--active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.pill--error {
+  border-color: var(--error);
+  color: var(--error);
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.meta code {
+  font-family: 'DM Mono', monospace;
+  color: var(--text-primary);
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.board.is-hidden {
+  display: none;
+}
+
+.board-wrap {
+  position: relative;
+  min-height: 320px;
+}
+
+.board-wrap.is-crushed .cell {
+  border-color: rgba(255, 128, 128, 0.35);
+  background: rgba(70, 12, 12, 0.92);
+  color: #ffc7c7;
+}
+
+.board-wrap.is-crushed .cell-player,
+.board-wrap.is-crushed .cell-goal,
+.board-wrap.is-crushed .cell-block {
+  border-color: var(--error);
+  color: #ffd4d4;
+  background: rgba(120, 18, 18, 0.95);
+}
+
+.board-wrap.is-crushed .cell-crushed {
+  border-color: #ffd4d4;
+  background: rgba(150, 24, 24, 0.98);
+  color: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(255, 212, 212, 0.35);
+}
+
+.board-flag {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-width: min(80%, 420px);
+  padding: 16px 20px;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: rgba(10, 10, 10, 0.92);
+  box-shadow: 0 0 24px rgba(117, 248, 111, 0.18);
+  font-family: 'DM Mono', monospace;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--accent);
+  text-align: center;
+  pointer-events: none;
+}
+
+.board-flag.is-visible {
+  display: flex;
+}
+
+.board-flag.is-danger {
+  border-color: var(--error);
+  box-shadow: 0 0 24px rgba(255, 128, 128, 0.2);
+  color: var(--error);
+}
+
+.board-placeholder {
+  min-height: 320px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 6px;
+  background: rgba(17, 17, 17, 0.68);
+  color: var(--text-muted);
+  text-align: center;
+  font-size: 16px;
+}
+
+.board-placeholder.is-visible {
+  display: flex;
+}
+
+.board-row {
+  display: flex;
+  gap: 8px;
+}
+
+.cell {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #111111;
+  font-family: 'DM Mono', monospace;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.cell-player {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: linear-gradient(135deg, var(--accent-dim), rgba(17, 17, 17, 0.98));
+}
+
+.cell-goal {
+  border-color: var(--warning);
+  color: var(--warning);
+}
+
+.cell-block {
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.cell__value {
+  line-height: 1;
+}
+
+.cell__arrow {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.cell__marker {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  color: #ffffff;
+  pointer-events: none;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #111111;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.legend-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+}
+
+.legend-player { border-color: var(--accent); color: var(--accent); }
+.legend-goal { border-color: var(--warning); color: var(--warning); }
+.legend-block { background: rgba(255,255,255,0.08); color: var(--text-primary); }
+
+.message {
+  min-height: 22px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.message.error {
+  color: var(--error);
+}
+</style>
+</head>
+<body>
+<script src="https://cart.easy.tools/login.js?type=block&id=b34df704-20c1-4adb-8aa9-b454428726ea"></script>
+<script>
+!window._EC_HASH_10825c914cdc79311c67abfe0cce3019 && (location.href = "https://cart.easy.tools/r/b34df704-20c1-4adb-8aa9-b454428726ea");
+</script>
+<noscript>
+  <meta http-equiv="refresh" content="0;url=https://cart.easy.tools/r/b34df704-20c1-4adb-8aa9-b454428726ea">
+</noscript>
+
+<main class="page">
+  <div class="title">Reactor Preview</div>
+
+  <section class="node">
+    <div class="node__label">Status</div>
+    <div class="status">
+      <div class="pill" id="connectionStatus">Łączenie...</div>
+      <div class="pill" id="goalStatus">Cel nieosiągnięty</div>
+    </div>
+    <div class="meta" style="margin-top: 16px;">
+      <div>Ostatnie odświeżenie: <code id="updatedAt">-</code></div>
+    </div>
+    <div class="message" id="messageBox"></div>
+  </section>
+
+  <section class="node node--active">
+    <div class="node__label">Board 7x5</div>
+    <div class="board-wrap" id="boardWrap">
+      <div class="board" id="board"></div>
+      <div class="board-flag" id="boardFlag" aria-live="polite"></div>
+      <div class="board-placeholder" id="boardPlaceholder">The preview will appear here when you start the task.</div>
+    </div>
+  </section>
+
+  <section class="node">
+    <div class="node__label">Legenda</div>
+    <div class="legend">
+      <div class="legend-item"><span class="legend-swatch legend-player">P</span> Robot</div>
+      <div class="legend-item"><span class="legend-swatch legend-goal">G</span> Cel</div>
+      <div class="legend-item"><span class="legend-swatch legend-block">B</span> Bloczek</div>
+      <div class="legend-item"><span class="legend-swatch legend-player">↑</span> Następny ruch w górę</div>
+      <div class="legend-item"><span class="legend-swatch legend-player">↓</span> Następny ruch w dół</div>
+      <div class="legend-item"><span class="legend-swatch">.</span> Puste pole</div>
+    </div>
+  </section>
+</main>
+
+<script>
+const boardHandle = document.getElementById('board');
+const boardWrapHandle = document.getElementById('boardWrap');
+const boardFlagHandle = document.getElementById('boardFlag');
+const boardPlaceholderHandle = document.getElementById('boardPlaceholder');
+const connectionStatusHandle = document.getElementById('connectionStatus');
+const goalStatusHandle = document.getElementById('goalStatus');
+const updatedAtHandle = document.getElementById('updatedAt');
+const messageBoxHandle = document.getElementById('messageBox');
+
+const FAST_POLL_INTERVAL = 1000;
+const SLOW_POLL_INTERVAL = 2000;
+const MAX_UNCHANGED_POLLS = 10;
+
+let pollTimer = null;
+let lastBoardSignature = null;
+let unchangedPollCount = 0;
+let currentPollInterval = FAST_POLL_INTERVAL;
+
+function setMessage(text, isError) {
+  messageBoxHandle.textContent = String(text || '');
+  messageBoxHandle.classList.toggle('error', Boolean(isError));
+}
+
+function setConnectionState(text, isOk) {
+  connectionStatusHandle.textContent = text;
+  connectionStatusHandle.classList.toggle('pill--active', Boolean(isOk));
+  connectionStatusHandle.classList.toggle('pill--error', !isOk);
+}
+
+function setBoardMode(isCrushed) {
+  boardWrapHandle.classList.toggle('is-crushed', Boolean(isCrushed));
+}
+
+function setBoardFlag(flagText, variant) {
+  const safeFlagText = typeof flagText === 'string' ? flagText.trim() : '';
+  boardFlagHandle.textContent = safeFlagText;
+  boardFlagHandle.classList.toggle('is-visible', safeFlagText !== '');
+  boardFlagHandle.classList.toggle('is-danger', variant === 'danger' && safeFlagText !== '');
+}
+
+function showBoardPlaceholder(text) {
+  setBoardMode(false);
+  boardHandle.classList.add('is-hidden');
+  boardFlagHandle.classList.remove('is-visible');
+  boardFlagHandle.classList.remove('is-danger');
+  boardFlagHandle.textContent = '';
+  boardPlaceholderHandle.textContent = String(text || 'The preview will appear here when you start the task.');
+  boardPlaceholderHandle.classList.add('is-visible');
+}
+
+function showBoard() {
+  boardHandle.classList.remove('is-hidden');
+  boardPlaceholderHandle.classList.remove('is-visible');
+}
+
+function isMissingReactorState(data) {
+  if (!data || typeof data !== 'object') {
+    return false;
+  }
+
+  if (data.code === -980) {
+    return true;
+  }
+
+  return typeof data.message === 'string'
+    && data.message.indexOf('No reactor state found for this API key.') !== -1;
+}
+
+function extractFlagFromResponse(data) {
+  if (!data || typeof data !== 'object') {
+    return '';
+  }
+
+  if (typeof data.flag === 'string' && data.flag.trim() !== '') {
+    return data.flag.trim();
+  }
+
+  if (typeof data.message === 'string') {
+    const matchedFlag = data.message.match(/\{FLG:[A-Z0-9]+\}/i);
+    if (matchedFlag) {
+      return matchedFlag[0];
+    }
+  }
+
+  return '';
+}
+
+function buildBlockDirectionMap(blocks) {
+  const directionMap = new Map();
+
+  if (!Array.isArray(blocks)) {
+    return directionMap;
+  }
+
+  blocks.forEach(function(block) {
+    if (!block || typeof block !== 'object') {
+      return;
+    }
+
+    const col = Number(block.col);
+    const topRow = Number(block.top_row);
+    const direction = String(block.direction || '').trim().toLowerCase();
+
+    if (!Number.isInteger(col) || !Number.isInteger(topRow)) {
+      return;
+    }
+
+    if (direction !== 'up' && direction !== 'down') {
+      return;
+    }
+
+    directionMap.set(topRow + ':' + col, direction);
+  });
+
+  return directionMap;
+}
+
+function buildBoardSignature(board, blocks) {
+  const safeBoard = Array.isArray(board) ? board : [];
+  const safeBlocks = Array.isArray(blocks) ? blocks.map(function(block) {
+    return {
+      col: Number(block && block.col),
+      top_row: Number(block && block.top_row),
+      direction: String((block && block.direction) || '').trim().toLowerCase(),
+    };
+  }) : [];
+
+  return JSON.stringify({
+    board: safeBoard,
+    blocks: safeBlocks,
+  });
+}
+
+function isRobotCrushed(data) {
+  if (!data || typeof data !== 'object') {
+    return false;
+  }
+
+  if (Boolean(data.is_crushed)) {
+    return true;
+  }
+
+  const player = data.player;
+  const board = data.board;
+  const playerCol = Number(player && player.col);
+  const playerRow = Number(player && player.row);
+
+  if (!Array.isArray(board) || !Number.isInteger(playerCol) || !Number.isInteger(playerRow)) {
+    return false;
+  }
+
+  const row = board[playerRow - 1];
+  if (!Array.isArray(row)) {
+    return false;
+  }
+
+  return row[playerCol - 1] === 'B';
+}
+
+function startPolling() {
+  if (pollTimer !== null) {
+    clearInterval(pollTimer);
+  }
+
+  pollTimer = window.setInterval(async function() {
+    try {
+      await refreshBoard();
+    } catch (error) {
+      setConnectionState('Błąd', false);
+      setMessage(error instanceof Error ? error.message : 'Nieznany błąd.', true);
+    }
+  }, currentPollInterval);
+}
+
+function setPollInterval(nextInterval) {
+  if (currentPollInterval === nextInterval) {
+    return;
+  }
+
+  currentPollInterval = nextInterval;
+  startPolling();
+}
+
+function renderBoard(board, blocks, player, isCrushed) {
+  boardHandle.innerHTML = '';
+  showBoard();
+  const directionMap = buildBlockDirectionMap(blocks);
+  const playerCol = Number(player && player.col);
+  const playerRow = Number(player && player.row);
+
+  if (!Array.isArray(board)) {
+    return;
+  }
+
+  board.forEach(function(row, rowIndex) {
+    const rowHandle = document.createElement('div');
+    rowHandle.className = 'board-row';
+
+    if (!Array.isArray(row)) {
+      return;
+    }
+
+    row.forEach(function(cellValue, colIndex) {
+      const cellHandle = document.createElement('div');
+      const safeValue = typeof cellValue === 'string' ? cellValue : '.';
+      cellHandle.className = 'cell';
+
+      if (safeValue === 'P') {
+        cellHandle.classList.add('cell-player');
+      } else if (safeValue === 'G') {
+        cellHandle.classList.add('cell-goal');
+      } else if (safeValue === 'B') {
+        cellHandle.classList.add('cell-block');
+      }
+
+      if (
+        isCrushed
+        && Number.isInteger(playerCol)
+        && Number.isInteger(playerRow)
+        && playerCol === (colIndex + 1)
+        && playerRow === (rowIndex + 1)
+      ) {
+        cellHandle.classList.add('cell-crushed');
+      }
+
+      const valueHandle = document.createElement('span');
+      valueHandle.className = 'cell__value';
+      valueHandle.textContent = safeValue;
+      cellHandle.appendChild(valueHandle);
+
+      if (safeValue === 'B') {
+        const mapKey = String(rowIndex + 1) + ':' + String(colIndex + 1);
+        const direction = directionMap.get(mapKey);
+        if (direction === 'up' || direction === 'down') {
+          const arrowHandle = document.createElement('span');
+          arrowHandle.className = 'cell__arrow';
+          arrowHandle.textContent = direction === 'up' ? '↑' : '↓';
+          arrowHandle.title = direction === 'up'
+            ? 'Bloczek poruszy się w górę'
+            : 'Bloczek poruszy się w dół';
+          cellHandle.appendChild(arrowHandle);
+        }
+      }
+
+      if (
+        isCrushed
+        && Number.isInteger(playerCol)
+        && Number.isInteger(playerRow)
+        && playerCol === (colIndex + 1)
+        && playerRow === (rowIndex + 1)
+      ) {
+        const markerHandle = document.createElement('span');
+        markerHandle.className = 'cell__marker';
+        markerHandle.textContent = 'X';
+        markerHandle.title = 'Tutaj robot został zniszczony';
+        cellHandle.appendChild(markerHandle);
+      }
+
+      rowHandle.appendChild(cellHandle);
+    });
+
+    boardHandle.appendChild(rowHandle);
+  });
+}
+
+async function loadApiKey() {
+  if (typeof window._EC_USER_UUID !== 'string' || window._EC_USER_UUID.trim() === '') {
+    throw new Error('Brak identyfikatora Easycart.');
+  }
+
+  const response = await fetch('/stats', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: new URLSearchParams({
+      key: window._EC_USER_UUID.trim(),
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Nie udało się pobrać API key.');
+  }
+
+  const data = await response.json();
+  const apiKey = (data && typeof data.key === 'string') ? data.key.trim() : '';
+  if (!apiKey) {
+    throw new Error('Serwer nie zwrócił API key.');
+  }
+
+  window.localStorage.setItem('mykey', apiKey);
+  return apiKey;
+}
+
+async function refreshBoard() {
+  const storedKey = String(window.localStorage.getItem('mykey') || '').trim();
+  if (!storedKey) {
+    setConnectionState('Brak API key', false);
+    setMessage('Easycart nie zwrócił jeszcze klucza API.', true);
+    return;
+  }
+
+  const response = await fetch('/reactor_backend.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: new URLSearchParams({
+      key: storedKey,
+    }),
+  });
+
+  const data = await response.json();
+  if (!response.ok || !data || typeof data !== 'object' || !Array.isArray(data.board)) {
+    if (isMissingReactorState(data)) {
+      setConnectionState('Waiting', true);
+      goalStatusHandle.textContent = 'Task not started';
+      goalStatusHandle.classList.remove('pill--active');
+      goalStatusHandle.classList.remove('pill--error');
+      updatedAtHandle.textContent = '-';
+      setMessage('', false);
+      lastBoardSignature = null;
+      showBoardPlaceholder('The preview will appear here when you start the task.');
+      return;
+    }
+
+    const errorMessage = (data && typeof data.message === 'string')
+      ? data.message
+      : 'Nie udało się odczytać stanu reaktora.';
+    throw new Error(errorMessage);
+  }
+
+  const isCrushed = isRobotCrushed(data);
+  const nextBoardSignature = JSON.stringify({
+    board: buildBoardSignature(data.board, data.blocks),
+    isCrushed: isCrushed,
+    player: data.player || null,
+  });
+  const hasStateChanged = nextBoardSignature !== lastBoardSignature;
+
+  if (hasStateChanged) {
+    renderBoard(data.board, data.blocks, data.player, isCrushed);
+    lastBoardSignature = nextBoardSignature;
+    unchangedPollCount = 0;
+    setPollInterval(FAST_POLL_INTERVAL);
+  } else {
+    unchangedPollCount += 1;
+    if (unchangedPollCount >= MAX_UNCHANGED_POLLS) {
+      setPollInterval(SLOW_POLL_INTERVAL);
+    }
+  }
+
+  setBoardMode(isCrushed);
+  setConnectionState('Połączono', true);
+  goalStatusHandle.textContent = isCrushed
+    ? 'Robot zniszczony'
+    : (data.reached_goal ? 'Cel osiągnięty' : 'Cel nieosiągnięty');
+  goalStatusHandle.classList.toggle('pill--active', Boolean(data.reached_goal) && !isCrushed);
+  goalStatusHandle.classList.toggle('pill--error', isCrushed);
+  const backendFlag = extractFlagFromResponse(data);
+  setBoardFlag(
+    isCrushed ? 'ROBOT ZNISZCZONY' : backendFlag,
+    isCrushed ? 'danger' : 'success'
+  );
+  updatedAtHandle.textContent = typeof data.updated_at === 'string'
+    ? new Date(data.updated_at).toLocaleTimeString('pl-PL')
+    : '-';
+  setMessage(data.crush_message || data.message || 'Stan odczytany.', isCrushed);
+}
+
+async function bootstrap() {
+  try {
+    setConnectionState('Łączenie...', false);
+    await loadApiKey();
+    await refreshBoard();
+  } catch (error) {
+    setConnectionState('Błąd', false);
+    setMessage(error instanceof Error ? error.message : 'Nieznany błąd.', true);
+  }
+
+  if (pollTimer !== null) {
+    clearInterval(pollTimer);
+  }
+
+  currentPollInterval = FAST_POLL_INTERVAL;
+  startPolling();
+}
+
+bootstrap();
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4ef24304510d413eb950bcd2d4453a7a","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
