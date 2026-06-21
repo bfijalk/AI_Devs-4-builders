@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mission briefing: Skolwin</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 1.5rem; }
+    h1 { margin: 0 0 0.25rem; font-size: 1.75rem; }
+    h2 { margin: 0 0 0.75rem; font-size: 1rem; color: #93c5fd; text-transform: uppercase; letter-spacing: 0.05em; }
+    .meta { color: #94a3b8; margin-bottom: 1.25rem; }
+    .layout { display: flex; gap: 1.5rem; align-items: flex-start; flex-wrap: wrap; }
+    .map-panel { flex: 0 0 auto; }
+    .sidebar { flex: 1 1 420px; min-width: 320px; display: flex; flex-direction: column; gap: 1rem; }
+    .card { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 1rem 1.1rem; }
+    .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+    .stat { background: #0f172a; border-radius: 8px; padding: 0.75rem; }
+    .stat-label { color: #94a3b8; font-size: 0.8rem; }
+    .stat-value { font-size: 1.25rem; font-weight: 700; margin-top: 0.15rem; }
+    .grid { display: inline-grid; gap: 2px; background: #334155; padding: 2px; border-radius: 8px; }
+    .cell { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; font-weight: 700; border-radius: 4px; font-size: 0.85rem; }
+    .header { background: transparent; color: #94a3b8; font-size: 11px; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    th, td { text-align: left; padding: 0.45rem 0.35rem; border-bottom: 1px solid #334155; vertical-align: top; }
+    th { color: #94a3b8; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
+    .vehicle-name { font-weight: 700; text-transform: capitalize; color: #fbbf24; white-space: nowrap; }
+    .note { color: #cbd5e1; font-size: 0.88rem; line-height: 1.45; margin: 0; }
+    .note-title { font-weight: 700; color: #f8fafc; margin-bottom: 0.25rem; }
+    .note-block + .note-block { margin-top: 0.85rem; padding-top: 0.85rem; border-top: 1px solid #334155; }
+    .legend-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
+    .legend-item { display: flex; align-items: center; gap: 0.6rem; background: #0f172a; padding: 0.45rem 0.55rem; border-radius: 6px; font-size: 0.85rem; }
+    .swatch { width: 24px; height: 24px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+    .commands code { background: #0f172a; padding: 0.1rem 0.35rem; border-radius: 4px; color: #fde68a; }
+  </style>
+</head>
+<body>
+  <h1>Skolwin</h1>
+  <div class="meta">Mission briefing · 10x10 terrain map · reach the goal tile <strong>G</strong></div>
+  <div class="layout">
+    <div class="map-panel card">
+      <h2>Map</h2>
+      <div class="grid" style="grid-template-columns: repeat(11, auto);">
+        <div class="cell header"></div>
+        <div class="cell header">0</div>
+        <div class="cell header">1</div>
+        <div class="cell header">2</div>
+        <div class="cell header">3</div>
+        <div class="cell header">4</div>
+        <div class="cell header">5</div>
+        <div class="cell header">6</div>
+        <div class="cell header">7</div>
+        <div class="cell header">8</div>
+        <div class="cell header">9</div>
+        <div class="cell header">0</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+        <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+        <div class="cell header">1</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+        <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell header">2</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Tree" style="background:#1f5f2a; color:#fff;">T</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+        <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell header">3</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell header">4</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Tree" style="background:#1f5f2a; color:#fff;">T</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Goal" style="background:#ef4444; color:#fff;">G</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell header">5</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Rock" style="background:#6b7280; color:#fff;">R</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell header">6</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Rock" style="background:#6b7280; color:#fff;">R</div>
+        <div class="cell" title="Rock" style="background:#6b7280; color:#fff;">R</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+        <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell header">7</div>
+        <div class="cell" title="Start" style="background:#22c55e; color:#fff;">S</div>
+        <div class="cell" title="Rock" style="background:#6b7280; color:#fff;">R</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell header">8</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+        <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell header">9</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+        <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+        <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+      </div>
+    </div>
+    <div class="sidebar">
+      <div class="card">
+        <h2>Mission</h2>
+        <div class="stats">
+          <div class="stat"><div class="stat-label">Destination</div><div class="stat-value">Skolwin</div></div>
+          <div class="stat"><div class="stat-label">Starting food</div><div class="stat-value">10</div></div>
+          <div class="stat"><div class="stat-label">Starting fuel</div><div class="stat-value">10</div></div>
+          <div class="stat"><div class="stat-label">Map size</div><div class="stat-value">10 × 10</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Vehicles</h2>
+        <table>
+          <thead><tr><th>Mode</th><th>Fuel/move</th><th>Food/move</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="vehicle-name">walk</td>
+              <td>0,0</td>
+              <td>2,5</td>
+            </tr>
+            <tr>
+              <td class="vehicle-name">horse</td>
+              <td>0,0</td>
+              <td>1,6</td>
+            </tr>
+            <tr>
+              <td class="vehicle-name">car</td>
+              <td>0,7</td>
+              <td>1,0</td>
+            </tr>
+            <tr>
+              <td class="vehicle-name">rocket</td>
+              <td>1,0</td>
+              <td>0,1</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note" style="margin-top:0.75rem;"><span class="vehicle-name">walk:</span> Walking is the simplest and most reliable fallback mode because it requires no vehicle and burns no fuel at all. It is useful when you dismount and need to keep going without relying on machinery or mounts. The trade-off is that it is expensive in terms of food, so long routes on foot can drain resources very quickly. This means walk mode is dependable, but it should not be treated as free movement. Fuel consumption is 0.0 per move, and food consumption is 2.5 per move, which is the highest food cost among the available travel modes.</p>
+        <p class="note" style="margin-top:0.75rem;"><span class="vehicle-name">horse:</span> The horse is a balanced travel option for routes where you want to save fuel completely while still moving more comfortably than on foot. It does not consume any fuel at all, which makes it attractive when fuel reserves are low, but it still requires a meaningful amount of food to keep the journey going. This mode is less extreme than the rocket and less mechanical than the car, so it can be useful in medium-length routes when resource management matters more than raw speed. Fuel consumption is 0.0 per move, while food consumption is 1.6 per move.</p>
+        <p class="note" style="margin-top:0.75rem;"><span class="vehicle-name">car:</span> The car is a practical powered vehicle that offers a decent compromise between speed and resource usage. It uses less fuel per move than the rocket and requires only moderate food consumption, so it can be efficient on routes that stay on solid ground. However, it cannot drive on water, and entering a water tile means the vehicle is lost immediately. That makes route safety just as important as resource planning. Fuel consumption is 0.7 per move, while food consumption is 1.0 per move.</p>
+        <p class="note" style="margin-top:0.75rem;"><span class="vehicle-name">rocket:</span> The rocket is the fastest possible solution for moving around the world in this mission. It can cover ground very efficiently and keeps food consumption extremely low, but it is far from universal. It cannot travel over water, because it only hovers about one meter above the ground, so any deeper water tile is a serious problem. It also cannot fly over any chasm, cliff, or other gap where there is no supporting terrain below it. Fuel consumption is 1.0 per move, and food consumption is 0.1 per move, so it is excellent for speed runs but still demands careful route planning.</p>
+      </div>
+      <div class="card">
+        <h2>Movement rules</h2>
+        <div class="note-block">
+          <div class="note-title">Map legend and terrain markers</div>
+          <p class="note">The map uses a compact set of symbols, and every letter matters during route planning. The letter T marks a tree tile, W marks water, and R marks rocks that block movement completely. The letter S marks the starting position, while G marks the goal that ends the mission successfully. If someone misreads even one marker, the whole path can collapse before the traveler reaches the city. Treat the legend as the first thing to decode before testing any route.</p>
+        </div>
+        <div class="note-block">
+          <div class="note-title">Map orientation and command format</div>
+          <p class="note">The map is oriented in the standard way, with north at the top. Instructions for the savethem API must be sent as an array of steps and vehicle declarations. Valid keywords are up, down, left, right, dismount, walk, rocket, car, and horse. Because the vehicle has to be chosen at departure, it cannot be changed later in the trip. This means the command sequence must reflect both navigation and the initial travel mode from the very first move.</p>
+        </div>
+        <div class="note-block">
+          <div class="note-title">No gas stations on the map</div>
+          <p class="note">There is not a single gas station anywhere on the map, so every route must be planned with fuel reserves in mind from the very first step. No mid-mission refuel is possible, which makes optimistic calculations a great way to get stranded. If fuel might not be enough for the final stretch, the safer strategy is to leave the vehicle before that happens and finish the last tiles on foot. The command used to abandon the vehicle and continue walking is dismount.</p>
+        </div>
+        <div class="note-block">
+          <div class="note-title">When fuel and food are consumed</div>
+          <p class="note">Fuel and food are consumed at the moment the traveler moves across the map. That means resources are not spent when merely selecting the vehicle, but only when an actual step is executed. If a vehicle runs out of fuel, the mission is considered failed immediately. If the traveler runs out of food, the mission is also treated as failed. Resource planning is therefore just as important as choosing the correct path.</p>
+        </div>
+        <div class="note-block">
+          <div class="note-title">Available travel methods</div>
+          <p class="note">The available travel methods are walk, horse, car, and rocket. Walking is the default on-foot mode, while horse, car, and rocket are the selectable vehicles for departure. There is also one special transition command worth remembering: dismount. It is not a separate vehicle, but it lets the traveler leave the current vehicle and continue the route on foot.</p>
+        </div>
+        <div class="note-block">
+          <div class="note-title">Northern waterline and beaver activity</div>
+          <p class="note">Local notes mention that beavers like to live near rivers and build dams in those areas. Recent sightings place them in the northern part of the map. That does not automatically reveal a full route, but it strongly suggests paying attention to water patterns in the upper region. If terrain near the north looks suspiciously wet or constrained, the beavers may be part of the reason. Their presence is worth remembering when comparing alternative paths.</p>
+        </div>
+        <div class="note-block">
+          <div class="note-title">Which movement modes handle water</div>
+          <p class="note">Water is a serious restriction for most movement modes. No vehicle except the horse can move through water safely. A traveler may also cross water on foot, which makes walking a valid emergency fallback in some routes. The car is not suitable for water at all, and the rocket should not be trusted there either. Anyone planning a route near rivers or flooded tiles should account for that limitation before leaving the base.</p>
+        </div>
+        <div class="note-block">
+          <div class="note-title">Getting terrain maps for target cities</div>
+          <p class="note">Terrain maps for any city can be obtained from the /api/maps endpoint. To get the correct map, send the name of the city you want to reach in the request. This makes the maps service the standard source of terrain data when planning a mission toward a specific destination. If someone needs a fresh layout for route analysis, that endpoint is where to ask first.</p>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Map legend</h2>
+        <div class="legend-grid">
+          <div class="legend-item">
+            <div class="swatch" style="background:#3d7a37;">.</div>
+            <div><strong>Grass</strong><br><span style="color:#94a3b8;">Empty passable terrain</span></div>
+          </div>
+          <div class="legend-item">
+            <div class="swatch" style="background:#1f5f2a;">T</div>
+            <div><strong>Tree</strong><br><span style="color:#94a3b8;">Tree tile (+0.2 fuel on powered vehicles)</span></div>
+          </div>
+          <div class="legend-item">
+            <div class="swatch" style="background:#2b6cb0;">W</div>
+            <div><strong>Water</strong><br><span style="color:#94a3b8;">River or lake</span></div>
+          </div>
+          <div class="legend-item">
+            <div class="swatch" style="background:#6b7280;">R</div>
+            <div><strong>Rock</strong><br><span style="color:#94a3b8;">Blocks movement</span></div>
+          </div>
+          <div class="legend-item">
+            <div class="swatch" style="background:#22c55e;">S</div>
+            <div><strong>Start</strong><br><span style="color:#94a3b8;">Mission starting position</span></div>
+          </div>
+          <div class="legend-item">
+            <div class="swatch" style="background:#ef4444;">G</div>
+            <div><strong>Goal</strong><br><span style="color:#94a3b8;">Destination — reach to win</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card commands">
+        <h2>Commands</h2>
+        <p class="note">Directions: <code>up</code> <code>down</code> <code>left</code> <code>right</code></p>
+        <p class="note">Vehicles (choose at departure): <code>walk</code> <code>horse</code> <code>car</code> <code>rocket</code></p>
+        <p class="note">Special: <code>dismount</code> — leave vehicle and continue on foot.</p>
+        <p class="note">North is at the top of the map. No refueling on the route.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
