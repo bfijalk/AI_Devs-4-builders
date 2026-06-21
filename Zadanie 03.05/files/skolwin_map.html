@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Map: Skolwin</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #111827; color: #f3f4f6; margin: 2rem; }
+    h1 { margin-bottom: 0.25rem; }
+    .meta { color: #9ca3af; margin-bottom: 1.5rem; }
+    .grid { display: inline-grid; gap: 2px; background: #374151; padding: 2px; border-radius: 8px; }
+    .cell { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; font-weight: 700; border-radius: 4px; }
+    .header { background: transparent; color: #9ca3af; font-size: 12px; font-weight: 600; }
+    .legend { margin-top: 1.5rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.5rem; }
+    .legend-item { display: flex; align-items: center; gap: 0.75rem; background: #1f2937; padding: 0.5rem 0.75rem; border-radius: 6px; }
+    .swatch { width: 28px; height: 28px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <h1>Skolwin</h1>
+  <div class="meta">10x10 terrain map · Map found.</div>
+  <div class="grid" style="grid-template-columns: repeat(11, auto);">
+    <div class="cell header"></div>
+    <div class="cell header">0</div>
+    <div class="cell header">1</div>
+    <div class="cell header">2</div>
+    <div class="cell header">3</div>
+    <div class="cell header">4</div>
+    <div class="cell header">5</div>
+    <div class="cell header">6</div>
+    <div class="cell header">7</div>
+    <div class="cell header">8</div>
+    <div class="cell header">9</div>
+    <div class="cell header">0</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+    <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+    <div class="cell header">1</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+    <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell header">2</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Tree" style="background:#1f5f2a; color:#fff;">T</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+    <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell header">3</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell header">4</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Tree" style="background:#1f5f2a; color:#fff;">T</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Goal" style="background:#ef4444; color:#fff;">G</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell header">5</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Rock" style="background:#6b7280; color:#fff;">R</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell header">6</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Rock" style="background:#6b7280; color:#fff;">R</div>
+    <div class="cell" title="Rock" style="background:#6b7280; color:#fff;">R</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+    <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell header">7</div>
+    <div class="cell" title="Start" style="background:#22c55e; color:#fff;">S</div>
+    <div class="cell" title="Rock" style="background:#6b7280; color:#fff;">R</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell header">8</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+    <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell header">9</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+    <div class="cell" title="Water" style="background:#2b6cb0; color:#fff;">W</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+    <div class="cell" title="Grass" style="background:#3d7a37; color:#fff;">.</div>
+  </div>
+  <div class="legend">
+    <div class="legend-item">
+      <div class="swatch" style="background:#3d7a37;">.</div>
+      <div><strong>Grass</strong><br><span style="color:#9ca3af;">Empty passable terrain</span></div>
+    </div>
+    <div class="legend-item">
+      <div class="swatch" style="background:#1f5f2a;">T</div>
+      <div><strong>Tree</strong><br><span style="color:#9ca3af;">Tree tile</span></div>
+    </div>
+    <div class="legend-item">
+      <div class="swatch" style="background:#2b6cb0;">W</div>
+      <div><strong>Water</strong><br><span style="color:#9ca3af;">River or lake</span></div>
+    </div>
+    <div class="legend-item">
+      <div class="swatch" style="background:#6b7280;">R</div>
+      <div><strong>Rock</strong><br><span style="color:#9ca3af;">Blocks movement</span></div>
+    </div>
+    <div class="legend-item">
+      <div class="swatch" style="background:#22c55e;">S</div>
+      <div><strong>Start</strong><br><span style="color:#9ca3af;">Mission starting position</span></div>
+    </div>
+    <div class="legend-item">
+      <div class="swatch" style="background:#ef4444;">G</div>
+      <div><strong>Goal</strong><br><span style="color:#9ca3af;">Destination — reach to win</span></div>
+    </div>
+  </div>
+</body>
+</html>
