@@ -1,0 +1,67 @@
+{
+  "code": 120,
+  "message": "OKO Editor API help.",
+  "status": "success",
+  "command": "help",
+  "description": "Available commands and request syntax for okoeditor API.",
+  "commands": [
+    {
+      "action": "help",
+      "syntax": {
+        "apikey": "YOUR_API_KEY",
+        "task": "okoeditor",
+        "answer": {
+          "action": "help"
+        }
+      },
+      "notes": [
+        "Returns this help message.",
+        "No additional fields are required."
+      ]
+    },
+    {
+      "action": "update",
+      "syntax": {
+        "apikey": "YOUR_API_KEY",
+        "task": "okoeditor",
+        "answer": {
+          "page": "incydenty|notatki|zadania",
+          "id": "32-char-hex-id",
+          "action": "update",
+          "content": "new description text (optional)",
+          "title": "new title (optional)",
+          "done": "YES|NO (only for page zadania, optional)"
+        }
+      },
+      "required_fields": [
+        "page",
+        "id",
+        "action"
+      ],
+      "optional_fields": [
+        "content",
+        "title",
+        "done"
+      ],
+      "rules": [
+        "At least one of \u0022content\u0022 or \u0022title\u0022 must be provided.",
+        "\u0022done\u0022 is allowed only for page \u0022zadania\u0022.",
+        "Page \u0022uzytkownicy\u0022 is read-only and cannot be updated."
+      ]
+    },
+    {
+      "action": "done",
+      "syntax": {
+        "apikey": "YOUR_API_KEY",
+        "task": "okoeditor",
+        "answer": {
+          "action": "done"
+        }
+      },
+      "notes": [
+        "Verifies if all required data edits are completed.",
+        "Returns a flag only when every condition is satisfied."
+      ]
+    }
+  ]
+}
